@@ -13,6 +13,30 @@ var obstacleY = radius*2;
 /* 장애물 속도(임시 고정) */
 var speed = 4;
 
+
+/* 벽 구성요소 (직선집합) */
+function Line(sx,sy,fx,fy){
+    /* x,y값 출발좌표 */
+    this.startX = sx;
+    this. startY = sy;
+    /* x,y값 출발좌표 */
+    this.finishX = fx;
+    this.finishY = fy;
+    /* draw */
+    this.draw = function(){
+        console.log("line draw func");
+        c.beginPath();
+        c.moveTo(this.startX,this.startY);
+        c.lineTo(this.finishX,this.finishY);
+        c.strokeStyl = 'black';
+        c.lineWidth = 2;
+        c.stroke();
+    }
+
+}
+
+
+/* 장애물 클래스 */
 function Circle(x, y,speed){
     /* x,y값 초기좌표 */
     this.x = x; 
