@@ -28,7 +28,7 @@ function Line(sx,sy,fx,fy){
         c.beginPath();
         c.moveTo(this.startX,this.startY);
         c.lineTo(this.finishX,this.finishY);
-        c.strokeStyl = 'black';
+        c.strokeStyle = 'black';
         c.lineWidth = 2;
         c.stroke();
     }
@@ -43,35 +43,38 @@ function Circle(x, y,speed){
     this.y = y;
     /* 장애물 이동 속도 조절 */
     this.speed = speed;
-
+    /* 그리기 - 애니메이션 */
     this.draw = function(){
-        console.log("draw func");
-        c.beginPath();
-        c.arc(this.x,100,radius,0,Math.PI*2,false);
-        c.fillStyle = 'blue';
-        c.fill();
-        c.strokeStyle = 'black';
-        c.stroke();
-    }
-    this.update = function(){
         console.log("update func");
         if(this.x+radius > canvas.width || this.x-radius < 0)  
             this.speed = -this.speed;
         this.x+=this.speed;
 
-        this.draw();
+        console.log("draw func");
+        c.beginPath();
+        c.arc(this.x,this.y,radius,0,Math.PI*2,false);
+        c.fillStyle = 'yellow';
+        c.fill();
+        c.strokeStyle = 'black';
+        c.stroke();
     }
 }
 
-var circle = new Circle(obstacleX,obstacleY,speed);
-
-var circle = new Circle(obstacleX,obstacleY,1);
+/* 다중 장애물 생성 */
+let circle = [new Circle(50, 50, speed)];
+circle.push(new Circle(10, 10, speed));
+circle.push(new Circle(20, 20, speed));
+circle.push(new Circle(30, 30, speed));
+circle.push(new Circle(40, 40, speed));
 
 function animate(){
     console.log("animate func");
-    requestAnimationFrame(animate);
     c.clearRect(0,0,innerWidth,innerHeight);
-    circle.update();
+    //circle.draw();
+    for(let i=0; i<5; i++){
+        circle[i].draw();
+    }
+    requestAnimationFrame(animate);
 }
 
 animate();
