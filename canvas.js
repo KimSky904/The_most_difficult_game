@@ -6,22 +6,25 @@ canvas.height = canvas.width*9/12;
 var c = canvas.getContext('2d');
 
 /* 장애물 반지름 지정 */
-var radius = 8;
+let radius = 8;
 /* 장애물 너비, 높이 */
-var obstacleX = radius*2;
-var obstacleY = radius*2;
+let obstacleX = radius*2;
+let obstacleY = radius*2;
 /* 장애물 속도(임시 고정) */
-var speed = 4;
+let speed = 4;
+/* 블럭 크기 */
+let blockSize = 27;
+/* 라인 마침점 좌표 */
+let lastX,lastY;
 
-
-/* 벽 구성요소 (직선집합) */
-function Line(sx,sy,fx,fy){
+/* draw inner map */
+function Line(startX, startY, finishX, finishY){
     /* x,y값 출발좌표 */
-    this.startX = sx;
-    this. startY = sy;
-    /* x,y값 출발좌표 */
-    this.finishX = fx;
-    this.finishY = fy;
+    this.startX = startX;
+    this. startY = startY;
+    /* x,y값 도착좌표 */
+    this.finishX = finishX;
+    this.finishY = finishY;
     /* draw */
     this.draw = function(){
         console.log("line draw func");
@@ -32,6 +35,48 @@ function Line(sx,sy,fx,fy){
         c.lineWidth = 2;
         c.stroke();
     }
+}        
+
+
+
+/* 1. draw map line */ //+) beginPath() 를 호출하지 않으면 이어지는 line 생성됨
+function drawFirstLine(startX, startY, finishX, finishY){
+    c.beginPath();
+    c.moveTo(startX,startY);
+    c.lineTo(finishX,finishY);
+    c.strokeStyle = 'black';
+    c.lineWidth = 2;
+    c.lineCap = "square"
+    c.stroke();
+    /* 마지막 line 끝 좌표 저장 */
+    lastX = finishX;
+    lastY = finishY;
+}
+function drawNextLine(startX, startY, finishX, finishY){
+    c.moveTo(startX,startY);
+    c.lineTo(finishX,finishY);
+    c.strokeStyle = 'black';
+    c.lineWidth = 2;
+    c.lineCap = "square"
+    c.stroke();
+    /* 마지막 line 끝 좌표 저장 */
+    lastX = finishX;
+    lastY = finishY;
+}
+
+/* 2. draw green room */
+function drawGreenRoom(startX, startY, finishX, finishY){
+    //직사각형 범위 전체 적용
+    for(let i=startX; i<finishX; i++){
+        for(let j=startY; j<finishX; j++){
+            c.fillStyle = 'white';
+            c.fillRect(i,j,blockSize,blockSize);
+        }
+    }
+
+}
+/* 3. draw checkbox room */
+function drawCheckBoxRoom(){ 
 
 }
 
@@ -70,10 +115,30 @@ circle.push(new Circle(40, 40, speed));
 function animate(){
     console.log("animate func");
     c.clearRect(0,0,innerWidth,innerHeight);
-    //circle.draw();
     for(let i=0; i<5; i++){
         circle[i].draw();
     }
+    /* draw lines */
+    drawFirstLine(50,140,50,300);
+    drawNextLine(lastX,lastY,lastX+(blockSize*5),lastY); //오른쪽으로 이동
+    drawNextLine(lastX,lastY,lastX,lastY-(blockSize*1)); //위쪽으로 이동
+    drawNextLine(lastX,lastY,lastX+(blockSize*9),lastY); //오른쪽
+    drawNextLine(lastX,lastY,lastX,lastY-(blockSize*4)); //위쪽
+    drawNextLine(lastX,lastY,lastX+(blockSize*1),lastY); //오른쪽
+    drawNextLine(lastX,lastY,lastX,lastY+(blockSize*5)); //아래쪽
+    drawNextLine(lastX,lastY,lastX+(blockSize*3),lastY); //오른쪽
+    drawNextLine(lastX,lastY,lastX,lastY-(blockSize*6)); //위쪽
+    drawNextLine(lastX,lastY,lastX-(blockSize*5),lastY); //왼쪽
+    drawNextLine(lastX,lastY,lastX,lastY+(blockSize*1)); //아래쪽
+    drawNextLine(lastX,lastY,lastX-(blockSize*9),lastY); //왼쪽
+    drawNextLine(lastX,lastY,lastX,lastY+(blockSize*4)); //아래쪽
+    drawNextLine(lastX,lastY,lastX-(blockSize*1),lastY); //왼쪽
+    drawNextLine(lastX,lastY,lastX,lastY-(blockSize*5)); //위쪽
+    drawNextLine(lastX,lastY,lastX-(blockSize*3),lastY); //왼쪽
+    c.lineWidth = 1;
+    /* fill map colors */
+    drawGreenRoom(50,140,50+(blockSize*3),140+(blockSize*6));
+
     requestAnimationFrame(animate);
 }
 
