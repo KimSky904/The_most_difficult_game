@@ -10,13 +10,10 @@ let radius = 8;
 /* 장애물 너비, 높이 */
 let obstacleX = radius*2;
 let obstacleY = radius*2;
-/* 장애물 속도(임시 고정) */
-let speed = 4;
 /* 블럭 크기 */
 let blockSize = 27;
 /* 라인 마침점 좌표 */
 let lastX,lastY;
-let count = 0;
 
 
 
@@ -72,7 +69,7 @@ function drawNextLine(finishX, finishY){
 }
 
 /* 2. draw green room */
-function drawGreenRoom(startX, startY, finishX, finishY){
+function drawGreenRoom(startX, startY){
     ++count;
     if(count%2==0){
         c.fillStyle = 'white';
@@ -91,6 +88,8 @@ function drawCheckBoxRoom(){
 
 /* 장애물 클래스 */
 function Circle(startX, startY,speed,finishX,finishY,leftRight){
+    /* 장애물 속도(임시 고정) */
+    this.speed = speed;
     /* 왼쪽방향 or 오른쪽방향 */
     this.direction = leftRight; 
     /* x,y값 현재좌표 */
@@ -103,8 +102,7 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     this.finishX = finishX; 
     this.finishY = finishY;
     /* 장애물 이동 속도 조절 */
-    if(leftRight == "left") this.speed = -speed;
-    else this.speed = speed;
+    this.speed = speed;
     /* 그리기 - 애니메이션 */
     this.draw = function(){
         console.log("--update func--");
@@ -113,17 +111,10 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
                 this.speed = -this.speed;
             this.x += this.speed;
         } else {
-            console.log(this.speed);
-            console.log(startX,startY,finishX,finishY);
-            console.log(this.x,this.y,this.startX,this.startY,this.finishX,this.finishY);
-            console.log(radius);
-            //170+radius,180+blockSize*1
-            if(this.x < this.startX || this.x > this.finishX) //시작점과 끝점 사이를 이동
+            if(this.x > this.startX || this.x < this.finishX) //시작점과 끝점 사이를 이동
                 this.speed = -this.speed;
             this.x += this.speed;
         }
-
-
         console.log("draw func");
         c.beginPath();
         c.arc(this.x,this.y,radius,0,Math.PI*2,false);
@@ -134,7 +125,7 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     }
 }
 
-/* lv1 draw lines */
+/* lv1 맵 line 그리기 */
 // 시작 좌표 : 50,140
 drawFirstLine(50,140,50,300);
 drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
@@ -156,18 +147,18 @@ c.lineWidth = 1;
 
 /* 다중 장애물 생성 */
 //(startX, startY,speed,finishX,finishY)
-let circle = [new Circle(170+radius, 180, speed,418-radius-5,180,"right")];
-circle.push(new Circle(418-radius-5, 180+blockSize*1, speed,170+radius,180+blockSize*1,"left"));
-circle.push(new Circle(170+radius, 180+blockSize*2, speed,418-radius-5,180+blockSize*2,"right"));
-circle.push(new Circle(418-radius-5, 180+blockSize*3, speed,170+radius,180+blockSize*3,"left"));
+let circle = [new Circle(170+radius, 180, 3,418-radius,180,"right")];
+circle.push(new Circle(418-radius, 180+blockSize*1, 3,170+radius,180+blockSize*1,"left"));
+circle.push(new Circle(170+radius, 180+blockSize*2, 3,418-radius,180+blockSize*2,"right"));
+circle.push(new Circle(418-radius, 180+blockSize*3, 3,170+radius,180+blockSize*3,"left"));
 
 function animate(){
     console.log("animate func");
-    //장애물 이동경로만 다시 그림
+    //장애물 이동범위 초기화
     for(let i=0;i<circle.length;i++){
-        c.clearRect(circle[i].x-radius-3,circle[i].y-radius-5,blockSize,blockSize-3);
+        c.clearRect(circle[i].x-radius-3,circle[i].y-radius-5,blockSize-2,blockSize-3);
     }
-
+    //장애물 draw
     for(let i=0;i<circle.length;i++){
         circle[i].draw();
     }
