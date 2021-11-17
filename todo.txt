@@ -1,0 +1,42 @@
+[전역변수] lastX,lastY
+
+[맵] 라인그리기
+drawFirstLine(출발X,출발Y,도착X,도착Y){
+    beginPath()
+    draw line 출발(x,y) to 도착(x,y)
+    line 끝난지점 저장 (lastX,lastY)
+}
+drawNextLine(도착X,도착Y){
+    draw line 출발(lastX,lastY) to 도착(x,y)
+    line 끝난지점 저장 (lastX,lastY)
+}
+
+[맵] 초록영역 칠하기
+drawGreenRoom()
+[맵] 체크박스영역 칠하기
+drawCheckBoxRoom()
+
+
+function Circle(생성x,생성y,속도,도착x,도착y,왼쪽오른쪽){
+    this.왼쪽방향인지오른쪽방향인지 = 왼쪽오른쪽
+    this.반지름 = 임의값
+    this.현재좌표 x,y = 생성x,생성y
+    this.출발좌표 x,y = 생성x,생성y
+    this.도착좌표 x,y = 도착x,도착y
+    this.속도 = 속도
+    this.그리기 = function(){
+        if(오른쪽방향){
+            if(this.현재좌표-반지름 < 출발좌표 || this.현재좌표+반지름 > 도착좌표){
+                this.속도 = -this.속도
+            }
+            this.현재좌표 += this.속도
+        } else(왼쪽방향){
+            if(this.현재좌표-반지름 < 도착좌표 || this.현재좌표+반지름 > 출발좌표){
+                this.속도 = this.속도
+            }
+            this.현재좌표 -= this.속도
+        }
+
+    }
+
+}

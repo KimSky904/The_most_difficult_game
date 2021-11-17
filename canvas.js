@@ -17,31 +17,6 @@ let lastX,lastY;
 
 
 
-//참고! 모든 좌표는 레벨 1을 기준으로 하고있음
-
-
-
-/* draw inner map */
-function Line(startX, startY, finishX, finishY){
-    /* x,y값 출발좌표 */
-    this.startX = startX;
-    this. startY = startY;
-    /* x,y값 도착좌표 */
-    this.finishX = finishX;
-    this.finishY = finishY;
-    /* draw */
-    this.draw = function(){
-        console.log("line draw func");
-        c.beginPath();
-        c.moveTo(this.startX,this.startY);
-        c.lineTo(this.finishX,this.finishY);
-        c.strokeStyle = 'black';
-        c.lineWidth = 2;
-        c.stroke();
-    }
-}        
-
-
 
 /* 1. draw map line */
 function drawFirstLine(startX, startY, finishX, finishY){
@@ -68,21 +43,22 @@ function drawNextLine(finishX, finishY){
     lastY = finishY;
 }
 
-/* 2. draw green room */
-function drawGreenRoom(startX, startY){
-    ++count;
-    if(count%2==0){
-        c.fillStyle = 'white';
-    }
-    else {
-        c.fillStyle = 'rgba(200, 206, 255, 0.89)';
-    }
+/* 2. 출발-도착 영역 타일 채우기 */
+function drawGreenRoom(startX, startY, width, height){
+    c.fillStyle = 'rgb(192, 229, 201)';
     //직사각형 범위 전체 적용
-    c.fillRect(startX,startY,blockSize,blockSize);
+    c.fillRect(startX,startY,width,height);
 }
-/* 3. draw checkbox room */
-function drawCheckBoxRoom(){ 
-
+/* 3. 체크 타일 채우기 */
+function drawCheckBoxRoomWhite(startX, startY){
+    count++;
+    c.fillStyle = 'rgb(255, 255, 255)';
+    c.fillRect(startX,startY-1,blockSize,blockSize); //균형이 안맞아서 -1처리해줌
+}
+function drawCheckBoxRoomPurple(startX, startY){
+    count++;
+    c.fillStyle = 'rgba(175, 183, 255, 0.733)';
+    c.fillRect(startX,startY-1,blockSize,blockSize);
 }
 
 
@@ -95,17 +71,17 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     /* x,y값 현재좌표 */
     this.x = startX;
     this.y = startY;
+    /* 장애물 이동 속도 조절 */
+    this.speed = speed;
     /* x,y값 초기좌표 */
     this.startX = startX; 
     this.startY = startY;
     /* x,y값 끝좌표 */
     this.finishX = finishX; 
     this.finishY = finishY;
-    /* 장애물 이동 속도 조절 */
-    this.speed = speed;
     /* 그리기 - 애니메이션 */
     this.draw = function(){
-        console.log("--update func--");
+        console.log("update func");
         if(this.direction == "right"){
             if(this.x < this.startX || this.x > this.finishX)  //시작점과 끝점 사이를 이동
                 this.speed = -this.speed;
@@ -125,8 +101,21 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     }
 }
 
-/* lv1 맵 line 그리기 */
-// 시작 좌표 : 50,140
+/* 출발-도착 영역 타일 채우기 */
+drawGreenRoom(50,140,blockSize*3,blockSize*6);
+drawGreenRoom(455,140,blockSize*3,blockSize*6);
+/* 체크 영역 타일 채우기 */
+// let count = 0;
+// drawCheckBoxRoomWhite(50+blockSize*3,140+blockSize*5);
+// drawCheckBoxRoomPurple(50+blockSize*4,140+blockSize*5);
+// for(let i=0; i<4; i++) {
+//     for(let j=0; j<10; j++) {
+//         if(count%2==0) drawCheckBoxRoomPurple(50+blockSize*(4+j),140+blockSize*(i+1));
+//         else drawCheckBoxRoomWhite(50+blockSize*(5+j),140+blockSize*(i+1));
+//     }
+// }
+
+/* 맵 line 그리기 */
 drawFirstLine(50,140,50,300);
 drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
 drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
@@ -145,13 +134,15 @@ drawNextLine(lastX,lastY-(blockSize*5)); //위쪽
 drawNextLine(lastX-(blockSize*3),lastY); //왼쪽
 c.lineWidth = 1;
 
-/* 다중 장애물 생성 */
-//(startX, startY,speed,finishX,finishY)
-let circle = [new Circle(170+radius, 180, 3,418-radius,180,"right")];
-circle.push(new Circle(418-radius, 180+blockSize*1, 3,170+radius,180+blockSize*1,"left"));
-circle.push(new Circle(170+radius, 180+blockSize*2, 3,418-radius,180+blockSize*2,"right"));
-circle.push(new Circle(418-radius, 180+blockSize*3, 3,170+radius,180+blockSize*3,"left"));
 
+
+/* 다중 장애물 생성 */
+let circle = [new Circle(170+radius, 180, 3, 418-radius, 180,"right")];
+circle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
+circle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
+circle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
+
+/* 애니메이션 */
 function animate(){
     console.log("animate func");
     //장애물 이동범위 초기화
@@ -164,5 +155,4 @@ function animate(){
     }
     requestAnimationFrame(animate);
 }
-
 animate();
