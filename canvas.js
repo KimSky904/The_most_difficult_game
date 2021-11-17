@@ -46,7 +46,7 @@ function Line(startX, startY, finishX, finishY){
 
 
 
-/* 1. draw map line */ //+) beginPath() 를 호출하지 않으면 이어지는 line 생성됨
+/* 1. draw map line */
 function drawFirstLine(startX, startY, finishX, finishY){
     c.beginPath();
     c.moveTo(startX,startY);
@@ -59,8 +59,8 @@ function drawFirstLine(startX, startY, finishX, finishY){
     lastX = finishX;
     lastY = finishY;
 }
-function drawNextLine(startX, startY, finishX, finishY){
-    c.moveTo(startX,startY);
+function drawNextLine(finishX, finishY){
+    c.moveTo(lastX,lastY);
     c.lineTo(finishX,finishY);
     c.strokeStyle = 'black';
     c.lineWidth = 2;
@@ -90,7 +90,9 @@ function drawCheckBoxRoom(){
 
 
 /* 장애물 클래스 */
-function Circle(startX, startY,speed,finishX,finishY){
+function Circle(startX, startY,speed,finishX,finishY,leftRight){
+    /* 왼쪽방향 or 오른쪽방향 */
+    this.direction = leftRight; 
     /* x,y값 현재좌표 */
     this.x = startX;
     this.y = startY;
@@ -101,13 +103,26 @@ function Circle(startX, startY,speed,finishX,finishY){
     this.finishX = finishX; 
     this.finishY = finishY;
     /* 장애물 이동 속도 조절 */
-    this.speed = speed;
+    if(leftRight == "left") this.speed = -speed;
+    else this.speed = speed;
     /* 그리기 - 애니메이션 */
     this.draw = function(){
-        console.log("update func");
-        if(this.x+radius > this.startX || this.x-radius < this.finishX)  //시작점과 끝점 사이를 이동
-            this.speed = -this.speed;
-        this.x+=this.speed;
+        console.log("--update func--");
+        if(this.direction == "right"){
+            if(this.x < this.startX || this.x > this.finishX)  //시작점과 끝점 사이를 이동
+                this.speed = -this.speed;
+            this.x += this.speed;
+        } else {
+            console.log(this.speed);
+            console.log(startX,startY,finishX,finishY);
+            console.log(this.x,this.y,this.startX,this.startY,this.finishX,this.finishY);
+            console.log(radius);
+            //170+radius,180+blockSize*1
+            if(this.x < this.startX || this.x > this.finishX) //시작점과 끝점 사이를 이동
+                this.speed = -this.speed;
+            this.x += this.speed;
+        }
+
 
         console.log("draw func");
         c.beginPath();
@@ -122,41 +137,40 @@ function Circle(startX, startY,speed,finishX,finishY){
 /* lv1 draw lines */
 // 시작 좌표 : 50,140
 drawFirstLine(50,140,50,300);
-drawNextLine(lastX,lastY,lastX+(blockSize*5),lastY); //오른쪽으로 이동
-drawNextLine(lastX,lastY,lastX,lastY-(blockSize*1)); //위쪽으로 이동
-drawNextLine(lastX,lastY,lastX+(blockSize*9),lastY); //오른쪽
-drawNextLine(lastX,lastY,lastX,lastY-(blockSize*4)); //위쪽
-drawNextLine(lastX,lastY,lastX+(blockSize*1),lastY); //오른쪽
-drawNextLine(lastX,lastY,lastX,lastY+(blockSize*5)); //아래쪽
-drawNextLine(lastX,lastY,lastX+(blockSize*3),lastY); //오른쪽
-drawNextLine(lastX,lastY,lastX,lastY-(blockSize*6)); //위쪽
-drawNextLine(lastX,lastY,lastX-(blockSize*5),lastY); //왼쪽
-drawNextLine(lastX,lastY,lastX,lastY+(blockSize*1)); //아래쪽
-drawNextLine(lastX,lastY,lastX-(blockSize*9),lastY); //왼쪽
-drawNextLine(lastX,lastY,lastX,lastY+(blockSize*4)); //아래쪽
-drawNextLine(lastX,lastY,lastX-(blockSize*1),lastY); //왼쪽
-drawNextLine(lastX,lastY,lastX,lastY-(blockSize*5)); //위쪽
-drawNextLine(lastX,lastY,lastX-(blockSize*3),lastY); //왼쪽
+drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
+drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
+drawNextLine(lastX+(blockSize*9),lastY); //오른쪽
+drawNextLine(lastX,lastY-(blockSize*4)); //위쪽
+drawNextLine(lastX+(blockSize*1),lastY); //오른쪽
+drawNextLine(lastX,lastY+(blockSize*5)); //아래쪽
+drawNextLine(lastX+(blockSize*3),lastY); //오른쪽
+drawNextLine(lastX,lastY-(blockSize*6)); //위쪽
+drawNextLine(lastX-(blockSize*5),lastY); //왼쪽
+drawNextLine(lastX,lastY+(blockSize*1)); //아래쪽
+drawNextLine(lastX-(blockSize*9),lastY); //왼쪽
+drawNextLine(lastX,lastY+(blockSize*4)); //아래쪽
+drawNextLine(lastX-(blockSize*1),lastY); //왼쪽
+drawNextLine(lastX,lastY-(blockSize*5)); //위쪽
+drawNextLine(lastX-(blockSize*3),lastY); //왼쪽
 c.lineWidth = 1;
 
 /* 다중 장애물 생성 */
-let circle = [new Circle(170, 180, speed,350,180)];
-//circle.push(new Circle(170+blockSize*8, 180+blockSize, speed));
-//circle.push(new Circle(170, 180, speed));
-//circle.push(new Circle(170, 180, speed));
+//(startX, startY,speed,finishX,finishY)
+let circle = [new Circle(170+radius, 180, speed,418-radius-5,180,"right")];
+circle.push(new Circle(418-radius-5, 180+blockSize*1, speed,170+radius,180+blockSize*1,"left"));
+circle.push(new Circle(170+radius, 180+blockSize*2, speed,418-radius-5,180+blockSize*2,"right"));
+circle.push(new Circle(418-radius-5, 180+blockSize*3, speed,170+radius,180+blockSize*3,"left"));
 
 function animate(){
     console.log("animate func");
     //장애물 이동경로만 다시 그림
     for(let i=0;i<circle.length;i++){
-        c.clearRect(circle[i].x,circle[i].y,blockSize,blockSize);
+        c.clearRect(circle[i].x-radius-3,circle[i].y-radius-5,blockSize,blockSize-3);
     }
 
-    circle[0].draw();
-
-//    for(let i=0; i<4; i++){
-//        circle[i].draw();
-//    }
+    for(let i=0;i<circle.length;i++){
+        circle[i].draw();
+    }
     requestAnimationFrame(animate);
 }
 
