@@ -5,6 +5,7 @@ canvas.height = canvas.width*9/12;
 /* canvas context 객체 */
 var c = canvas.getContext('2d');
 
+
 /* 장애물 반지름 지정 */
 let radius = 8;
 /* 장애물 너비, 높이 */
@@ -20,7 +21,6 @@ imgChar.src="image/square.png";
 var keycode;
 var dx=0;
 var dy=0;
-
 
 /* 1. draw map line */
 function drawFirstLine(startX, startY, finishX, finishY){
@@ -48,14 +48,10 @@ function drawNextLine(finishX, finishY){
 }
 
 /* 2. 출발-도착 영역 타일 채우기 */
-function drawGreenRoom(startX, startY, wid, hei){
+function drawGreenRoom(startX, startY, width, height){
+    c.fillStyle = 'rgb(192, 229, 201)';
     //직사각형 범위 전체 적용
-    //c.fillRect(startX,startY,wid,hei);
-    let saveZoneValue = document.getElementById('saveZone');
-    saveZoneValue.style.height = hei+'px';
-    saveZoneValue.style.width = wid+'px';
-    saveZoneValue.style.top = startY+'px';
-    saveZoneValue.style.left = startX+'px';
+    c.fillRect(startX,startY,width,height);
 }
 /* 3. 체크 타일 채우기 */
 function drawCheckBoxRoomWhite(startX, startY){
@@ -68,7 +64,6 @@ function drawCheckBoxRoomPurple(startX, startY){
     c.fillStyle = 'rgba(175, 183, 255, 0.733)';
     c.fillRect(startX,startY-1,blockSize,blockSize);
 }
-
 
 
 /* 장애물 클래스 */
@@ -149,7 +144,6 @@ function keyup(){
 /* 출발-도착 영역 타일 채우기 */
 drawGreenRoom(50,140,blockSize*3,blockSize*6);
 drawGreenRoom(455,140,blockSize*3,blockSize*6);
-
 /* 체크 영역 타일 채우기 */
 // let count = 0;
 // drawCheckBoxRoomWhite(50+blockSize*3,140+blockSize*5);
@@ -158,7 +152,6 @@ drawGreenRoom(455,140,blockSize*3,blockSize*6);
 //     for(let j=0; j<10; j++) {
 //         if(count%2==0) drawCheckBoxRoomPurple(50+blockSize*(4+j),140+blockSize*(i+1));
 //         else drawCheckBoxRoomWhite(50+blockSize*(5+j),140+blockSize*(i+1));
-//         count++;
 //     }
 // }
 
@@ -190,11 +183,7 @@ circle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*
 circle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
 
 /* 플레이어 생성 */
-let square = new Square(170, 180);
-
-/* 안전지대(출발,도착지점) 생성 */
-// drawGreenRoom(50,140,blockSize*3,blockSize*6);
-// drawGreenRoom(455,140,blockSize*3,blockSize*6);
+let square = new Square(85, 200);
 
 /* 애니메이션 */
 function animate(){
@@ -213,5 +202,3 @@ function animate(){
     requestAnimationFrame(animate);
 }
 animate();
-
-
