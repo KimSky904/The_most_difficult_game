@@ -14,8 +14,12 @@ let obstacleY = radius*2;
 let blockSize = 27;
 /* 라인 마침점 좌표 */
 let lastX,lastY;
-
-
+/* 플레이어 이미지, 플레이어 키보드 조작값, 좌표 */ 
+var imgChar= new Image();
+imgChar.src="image/square.png";
+var keycode;
+var dx=0;
+var dy=0;
 
 
 /* 1. draw map line */
@@ -44,10 +48,14 @@ function drawNextLine(finishX, finishY){
 }
 
 /* 2. 출발-도착 영역 타일 채우기 */
-function drawGreenRoom(startX, startY, width, height){
-    c.fillStyle = 'rgb(192, 229, 201)';
+function drawGreenRoom(startX, startY, wid, hei){
     //직사각형 범위 전체 적용
-    c.fillRect(startX,startY,width,height);
+    //c.fillRect(startX,startY,wid,hei);
+    let saveZoneValue = document.getElementById('saveZone');
+    saveZoneValue.style.height = hei+'px';
+    saveZoneValue.style.width = wid+'px';
+    saveZoneValue.style.top = startY+'px';
+    saveZoneValue.style.left = startX+'px';
 }
 /* 3. 체크 타일 채우기 */
 function drawCheckBoxRoomWhite(startX, startY){
@@ -60,6 +68,7 @@ function drawCheckBoxRoomPurple(startX, startY){
     c.fillStyle = 'rgba(175, 183, 255, 0.733)';
     c.fillRect(startX,startY-1,blockSize,blockSize);
 }
+
 
 
 /* 장애물 클래스 */
@@ -101,9 +110,46 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     }
 }
 
+/* 플레이어 클래스 */
+function Square(startX, startY) {
+    /* 시작 위치 */
+    this.x = startX;
+    this.y = startY;
+
+    this.move = function() {
+        this.x+= dx;
+        this.y+= dy;
+    }
+    this.draw = function() {
+        c.drawImage(imgChar,this.x,this.y,12,12);
+    }
+}
+
+function keydown(){
+    //눌러진 key의 코드값
+    keycode=event.keyCode;
+    switch(keycode){
+        case 37: dx=-1; break; //left
+        case 38: dy=-1; break; //up
+        case 39: dx=1; break; //right
+        case 40: dy=1; break; //down
+    }
+}
+function keyup(){
+    //떨어진 key의 코드값
+    keycode=event.keyCode;
+    switch(keycode){
+        case 37: 
+        case 39: dx=0; break;
+        case 38:
+        case 40: dy=0; break;
+    }
+}
+
 /* 출발-도착 영역 타일 채우기 */
 drawGreenRoom(50,140,blockSize*3,blockSize*6);
 drawGreenRoom(455,140,blockSize*3,blockSize*6);
+
 /* 체크 영역 타일 채우기 */
 // let count = 0;
 // drawCheckBoxRoomWhite(50+blockSize*3,140+blockSize*5);
@@ -112,6 +158,7 @@ drawGreenRoom(455,140,blockSize*3,blockSize*6);
 //     for(let j=0; j<10; j++) {
 //         if(count%2==0) drawCheckBoxRoomPurple(50+blockSize*(4+j),140+blockSize*(i+1));
 //         else drawCheckBoxRoomWhite(50+blockSize*(5+j),140+blockSize*(i+1));
+//         count++;
 //     }
 // }
 
@@ -142,6 +189,13 @@ circle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*
 circle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
 circle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
 
+/* 플레이어 생성 */
+let square = new Square(170, 180);
+
+/* 안전지대(출발,도착지점) 생성 */
+// drawGreenRoom(50,140,blockSize*3,blockSize*6);
+// drawGreenRoom(455,140,blockSize*3,blockSize*6);
+
 /* 애니메이션 */
 function animate(){
     console.log("animate func");
@@ -153,6 +207,11 @@ function animate(){
     for(let i=0;i<circle.length;i++){
         circle[i].draw();
     }
+    //플레이어 이동 후 그리기
+    square.move();
+    square.draw();
     requestAnimationFrame(animate);
 }
 animate();
+
+
