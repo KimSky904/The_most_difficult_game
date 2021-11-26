@@ -1,0 +1,49 @@
+<html>
+<head>
+<style type="text/css">
+
+  #base1 {
+
+  background-color: #DCDAD9;
+
+  width: 100px;
+
+  height: 100px;
+
+  position:absolute;
+
+  }
+ </style>
+</head>
+<script  language="javascript"  >
+ var ppp = 0;
+ function cal_exe(){
+   if( ppp == 0 )
+     add_div();
+   else
+     remove_div();   
+ }
+ function add_div(){
+    var a1 = document.createElement('div');
+    a1.innerHTML = " <div id='base1' >  </div> ";
+    document.body.appendChild(a1);
+    ppp += 1;
+    var pTag = document.getElementById("cal");
+    var pTag2 = document.getElementById("base1"); 
+    pTag2.style.top = 500;   
+    pTag2.style.left = 500;   
+ }
+ function remove_div(obj){
+    ppp= 0;
+    var pTag2 = document.getElementById("base1"); 
+    pTag2.parentNode.removeChild( pTag2 );
+ }
+</script>
+    <body>
+        <div id="container">
+        </div>
+        <br><br><br><br><br><br> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+        <input type='text'  id='cal'  >
+        <a href="javascript:cal_exe();"  >bb</a>
+    </body>
+</html>

@@ -10,16 +10,25 @@ canvas {
     /* canvas 중앙 배치 */
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%,-50%);
-    background-color: rgba(175, 183, 255, 0.89);
+    /* background-color: rgba(175, 183, 255, 0.89); */
+    background-color: transparent;
     border : 1px solid black;
     width: 600px;
     height: 400px;
+    z-index: 2;
 }
 body {
     width: 100%;
     height: 100%;
     overflow: hidden;
     background-color: #ffffff;
+}
+div {
+    z-index: 1;
+}
+#greenBox {
+    background-color: rgb(192, 229, 201);
+    position:absolute;
 }
 
 .mapBox {

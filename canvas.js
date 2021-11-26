@@ -47,11 +47,17 @@ function drawNextLine(finishX, finishY){
     lastY = finishY;
 }
 
-/* 2. 출발-도착 영역 타일 채우기 */
-function drawGreenRoom(startX, startY, width, height){
-    c.fillStyle = 'rgb(192, 229, 201)';
-    //직사각형 범위 전체 적용
-    c.fillRect(startX,startY,width,height);
+/* 2. 출발-도착 영역 타일(div) 생성하기 */
+function drawGreenRoom(startX, startY,width,height) {
+    var area = document.createElement('div');
+    area.innerHTML = "<div id='greenBox'> </div> ";
+    document.body.appendChild(area);
+    var box = document.getElementById("greenBox"); 
+    box.style.top = startY+canvas.style.top + "px";   
+    box.style.left = startX+canvas.style.left + "px";   
+    box.style.width = width + "px";
+    box.style.height = height + "px";
+    console.log(canvas.style.top, canvas.style.left);
 }
 /* 3. 체크 타일 채우기 */
 function drawCheckBoxRoomWhite(startX, startY){
@@ -64,6 +70,12 @@ function drawCheckBoxRoomPurple(startX, startY){
     c.fillStyle = 'rgba(175, 183, 255, 0.733)';
     c.fillRect(startX,startY-1,blockSize,blockSize);
 }
+/* 4.맵 지우기 */
+function deleteMap(){
+    c.clearRect(0,0,canvas.width,canvas.height);
+    //delete div (id : greenBox)
+}
+
 
 
 /* 장애물 클래스 */
@@ -141,19 +153,9 @@ function keyup(){
     }
 }
 
-/* 출발-도착 영역 타일 채우기 */
+/* 출발-도착 영역 타일(div) 생성 */
 drawGreenRoom(50,140,blockSize*3,blockSize*6);
 drawGreenRoom(455,140,blockSize*3,blockSize*6);
-/* 체크 영역 타일 채우기 */
-// let count = 0;
-// drawCheckBoxRoomWhite(50+blockSize*3,140+blockSize*5);
-// drawCheckBoxRoomPurple(50+blockSize*4,140+blockSize*5);
-// for(let i=0; i<4; i++) {
-//     for(let j=0; j<10; j++) {
-//         if(count%2==0) drawCheckBoxRoomPurple(50+blockSize*(4+j),140+blockSize*(i+1));
-//         else drawCheckBoxRoomWhite(50+blockSize*(5+j),140+blockSize*(i+1));
-//     }
-// }
 
 /* 맵 line 그리기 */
 drawFirstLine(50,140,50,300);
