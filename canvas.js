@@ -13,6 +13,7 @@ let obstacleX = radius*2;
 let obstacleY = radius*2;
 /* 블럭 크기 */
 let blockSize = 27;
+let checkSize = 25;
 /* 라인 마침점 좌표 */
 let lastX,lastY;
 /* 플레이어 이미지, 플레이어 키보드 조작값, 좌표 */ 
@@ -59,7 +60,7 @@ function drawGreenRoom(startX, startY,width,height) {
     box.style.top = startY-10+canvas.getBoundingClientRect().top + "px";   
     box.style.left = startX+canvas.getBoundingClientRect().left + "px";   
     box.style.width = width-3 + "px";
-    box.style.height = height-14 + "px";
+    box.style.height = height-12 + "px";
     console.log(canvas.getBoundingClientRect().top);
     console.log(canvas.getBoundingClientRect().left); 
 }
@@ -75,8 +76,15 @@ function drawCheckBoxRoom(startX, startY) {
     box.style.left = startX-6+canvas.getBoundingClientRect().left + "px";   
     box.style.width = blockSize*2 + "px";
     box.style.height = blockSize + "px";
-    box.style.background = "linear-gradient(to right,rgb(255, 255, 255) 50% 50%, rgba(175, 183, 255, 0.733) 50% 50%);";
 }
+// function drawCheckBoxContinuedRoom(startX, startY, width, height){
+//     //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
+//     for(let i = 0;i<height/blockSize;i++){ //10
+//         for(let j = 0;j<width/blockSize/2;j++){ //4
+//             drawCheckBoxRoom(startX+j*2*blockSize-12, startY+i*blockSize);
+//         }
+//     }
+// }
 /* 4.맵 지우기 */
 function deleteMap(){
     c.clearRect(0,0,canvas.width,canvas.height);
@@ -123,6 +131,16 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
         c.stroke();
     }
 }
+/* 맵 클래스 */
+function Map(){
+    /* 맵 정보 */
+    let mapNumber;
+    /* 사용자 출발 좌표 */
+    let startX,startY;
+    /* 도착 인식 좌표 */
+    let arrivedX, arrivedY;
+    /* 장애물 정보 */
+}
 /* 플레이어 클래스 */
 function Square(startX, startY) {
     /* 시작 위치 */
@@ -163,9 +181,9 @@ drawGreenRoom(50,140,blockSize*3,blockSize*6);
 drawGreenRoom(435,140,blockSize*3,blockSize*6);
 drawCheckBoxRoom(50+blockSize*3,140+blockSize*4);
 drawCheckBoxRoom(50+14+blockSize*12,123);
-drawCheckBoxRoom(50+blockSize*4,123+blockSize);
+//drawCheckBoxContinuedRoom(50+blockSize*4,123+blockSize,blockSize*10,blockSize*4);
 /* 맵 line 그리기 */
-drawFirstLine(50,140,50,300);
+drawFirstLine(50,140,50,140+blockSize*6);
 drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
 drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
 drawNextLine(lastX+(blockSize*9),lastY); //오른쪽
@@ -174,7 +192,7 @@ drawNextLine(lastX+(blockSize*1),lastY); //오른쪽
 drawNextLine(lastX,lastY+(blockSize*5)); //아래쪽
 drawNextLine(lastX+(blockSize*3),lastY); //오른쪽
 drawNextLine(lastX,lastY-(blockSize*6)); //위쪽
-drawNextLine(lastX-(blockSize*5),lastY); //왼쪽
+drawNextLine(lastX-(blockSize*5),lastY-1); //왼쪽
 drawNextLine(lastX,lastY+(blockSize*1)); //아래쪽
 drawNextLine(lastX-(blockSize*9),lastY); //왼쪽
 drawNextLine(lastX,lastY+(blockSize*4)); //아래쪽
@@ -207,7 +225,9 @@ function animate(){
     }
     //플레이어 이동 후 그리기
     square.move();
+    c.clearRect(square.x,square.y,blockSize-5,blockSize-5);
     square.draw();
+
     requestAnimationFrame(animate);
 
     if(value==1) deleteMap();

@@ -13,8 +13,6 @@ canvas {
     /* background-color: rgba(175, 183, 255, 0.89); */
     background-color: transparent;
     border : 1px solid black;
-    width: 700px;
-    height: 400px;
     z-index: 2;
     width: 550px; 
     max-width: 550px; 
@@ -40,6 +38,7 @@ div {
 .checkBox {
     position: absolute;
     border: none;
+    background : linear-gradient(to right,rgb(255, 255, 255) 50% 50%, rgba(175, 183, 255, 0.733) 50% 50%);
 }
 
 .mapBox {
