@@ -77,14 +77,14 @@ function drawCheckBoxRoom(startX, startY) {
     box.style.width = blockSize*2 + "px";
     box.style.height = blockSize + "px";
 }
-// function drawCheckBoxContinuedRoom(startX, startY, width, height){
-//     //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
-//     for(let i = 0;i<height/blockSize;i++){ //10
-//         for(let j = 0;j<width/blockSize/2;j++){ //4
-//             drawCheckBoxRoom(startX+j*2*blockSize-12, startY+i*blockSize);
-//         }
-//     }
-// }
+function drawMap(level, imagePath){
+    /* 기존 맵 배경 지우기 */
+
+    /* 신규 맵 배경 추가 */
+    let mapArea = document.createElement('div');
+    mapArea.innerHTML = `<img id='mapImage' src='${imagePath}'> </div> `;
+
+}
 /* 4.맵 지우기 */
 function deleteMap(){
     c.clearRect(0,0,canvas.width,canvas.height);
@@ -176,29 +176,32 @@ function keyup(){
     }
 }
 
+
+
 /* 출발-도착 영역 타일(div) 생성 */
-drawGreenRoom(50,140,blockSize*3,blockSize*6);
-drawGreenRoom(435,140,blockSize*3,blockSize*6);
-drawCheckBoxRoom(50+blockSize*3,140+blockSize*4);
-drawCheckBoxRoom(50+14+blockSize*12,123);
+drawMap(1,"../image/stage1.png");
+// drawGreenRoom(50,140,blockSize*3,blockSize*6);
+// drawGreenRoom(435,140,blockSize*3,blockSize*6);
+// drawCheckBoxRoom(50+blockSize*3,140+blockSize*4);
+// drawCheckBoxRoom(50+14+blockSize*12,123);
 //drawCheckBoxContinuedRoom(50+blockSize*4,123+blockSize,blockSize*10,blockSize*4);
 /* 맵 line 그리기 */
-drawFirstLine(50,140,50,140+blockSize*6);
-drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
-drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
-drawNextLine(lastX+(blockSize*9),lastY); //오른쪽
-drawNextLine(lastX,lastY-(blockSize*4)); //위쪽
-drawNextLine(lastX+(blockSize*1),lastY); //오른쪽
-drawNextLine(lastX,lastY+(blockSize*5)); //아래쪽
-drawNextLine(lastX+(blockSize*3),lastY); //오른쪽
-drawNextLine(lastX,lastY-(blockSize*6)); //위쪽
-drawNextLine(lastX-(blockSize*5),lastY-1); //왼쪽
-drawNextLine(lastX,lastY+(blockSize*1)); //아래쪽
-drawNextLine(lastX-(blockSize*9),lastY); //왼쪽
-drawNextLine(lastX,lastY+(blockSize*4)); //아래쪽
-drawNextLine(lastX-(blockSize*1),lastY); //왼쪽
-drawNextLine(lastX,lastY-(blockSize*5)); //위쪽
-drawNextLine(lastX-(blockSize*3),lastY); //왼쪽
+// drawFirstLine(50,140,50,140+blockSize*6);
+// drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
+// drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
+// drawNextLine(lastX+(blockSize*9),lastY); //오른쪽
+// drawNextLine(lastX,lastY-(blockSize*4)); //위쪽
+// drawNextLine(lastX+(blockSize*1),lastY); //오른쪽
+// drawNextLine(lastX,lastY+(blockSize*5)); //아래쪽
+// drawNextLine(lastX+(blockSize*3),lastY); //오른쪽
+// drawNextLine(lastX,lastY-(blockSize*6)); //위쪽
+// drawNextLine(lastX-(blockSize*5),lastY-1); //왼쪽
+// drawNextLine(lastX,lastY+(blockSize*1)); //아래쪽
+// drawNextLine(lastX-(blockSize*9),lastY); //왼쪽
+// drawNextLine(lastX,lastY+(blockSize*4)); //아래쪽
+// drawNextLine(lastX-(blockSize*1),lastY); //왼쪽
+// drawNextLine(lastX,lastY-(blockSize*5)); //위쪽
+// drawNextLine(lastX-(blockSize*3),lastY); //왼쪽
 c.lineWidth = 1;
 
 
