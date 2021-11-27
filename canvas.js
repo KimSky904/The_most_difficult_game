@@ -47,33 +47,40 @@ function drawNextLine(finishX, finishY){
     lastY = finishY;
 }
 
+
 /* 2. 출발-도착 영역 타일(div) 생성하기 */
 function drawGreenRoom(startX, startY,width,height) {
+    //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
+    let randomIdValue = Math.random();
     var area = document.createElement('div');
-    area.innerHTML = "<div id='greenBox'> </div> ";
-    document.body.appendChild(area);
-    var box = document.getElementById("greenBox"); 
-    box.style.top = startY+canvas.style.top + "px";   
-    box.style.left = startX+canvas.style.left + "px";   
-    box.style.width = width + "px";
-    box.style.height = height + "px";
-    console.log(canvas.style.top, canvas.style.left);
+    area.innerHTML = `<div class='greenBox' id='${randomIdValue}'> </div> `;
+    document.getElementById('mapBox').appendChild(area);
+    var box = document.getElementById(`${randomIdValue}`); 
+    box.style.top = startY-10+canvas.getBoundingClientRect().top + "px";   
+    box.style.left = startX+canvas.getBoundingClientRect().left + "px";   
+    box.style.width = width-3 + "px";
+    box.style.height = height-14 + "px";
+    console.log(canvas.getBoundingClientRect().top);
+    console.log(canvas.getBoundingClientRect().left); 
 }
 /* 3. 체크 타일 채우기 */
-function drawCheckBoxRoomWhite(startX, startY){
-    count++;
-    c.fillStyle = 'rgb(255, 255, 255)';
-    c.fillRect(startX,startY-1,blockSize,blockSize); //균형이 안맞아서 -1처리해줌
-}
-function drawCheckBoxRoomPurple(startX, startY){
-    count++;
-    c.fillStyle = 'rgba(175, 183, 255, 0.733)';
-    c.fillRect(startX,startY-1,blockSize,blockSize);
+function drawCheckBoxRoom(startX, startY) {
+    //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
+    let randomIdValue = Math.random();
+    var area = document.createElement('div');
+    area.innerHTML = `<div class='checkBox' id='${randomIdValue}'> </div> `;
+    document.getElementById('mapBox').appendChild(area);
+    var box = document.getElementById(`${randomIdValue}`); 
+    box.style.top = startY+5+canvas.getBoundingClientRect().top + "px";   
+    box.style.left = startX-6+canvas.getBoundingClientRect().left + "px";   
+    box.style.width = blockSize*2 + "px";
+    box.style.height = blockSize + "px";
+    box.style.background = "linear-gradient(to right,rgb(255, 255, 255) 50% 50%, rgba(175, 183, 255, 0.733) 50% 50%);";
 }
 /* 4.맵 지우기 */
 function deleteMap(){
     c.clearRect(0,0,canvas.width,canvas.height);
-    //delete div (id : greenBox)
+    document.getElementById("mapBox").removeChild();
 }
 
 
@@ -97,7 +104,7 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
     this.finishY = finishY;
     /* 그리기 - 애니메이션 */
     this.draw = function(){
-        console.log("update func");
+        //console.log("update func");
         if(this.direction == "right"){
             if(this.x < this.startX || this.x > this.finishX)  //시작점과 끝점 사이를 이동
                 this.speed = -this.speed;
@@ -107,7 +114,7 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
                 this.speed = -this.speed;
             this.x += this.speed;
         }
-        console.log("draw func");
+        //console.log("draw func");
         c.beginPath();
         c.arc(this.x,this.y,radius,0,Math.PI*2,false);
         c.fillStyle = 'yellow';
@@ -116,13 +123,11 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
         c.stroke();
     }
 }
-
 /* 플레이어 클래스 */
 function Square(startX, startY) {
     /* 시작 위치 */
     this.x = startX;
     this.y = startY;
-
     this.move = function() {
         this.x+= dx;
         this.y+= dy;
@@ -155,8 +160,10 @@ function keyup(){
 
 /* 출발-도착 영역 타일(div) 생성 */
 drawGreenRoom(50,140,blockSize*3,blockSize*6);
-drawGreenRoom(455,140,blockSize*3,blockSize*6);
-
+drawGreenRoom(435,140,blockSize*3,blockSize*6);
+drawCheckBoxRoom(50+blockSize*3,140+blockSize*4);
+drawCheckBoxRoom(50+14+blockSize*12,123);
+drawCheckBoxRoom(50+blockSize*4,123+blockSize);
 /* 맵 line 그리기 */
 drawFirstLine(50,140,50,300);
 drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
@@ -186,10 +193,10 @@ circle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*
 
 /* 플레이어 생성 */
 let square = new Square(85, 200);
-
+let value=0;
 /* 애니메이션 */
 function animate(){
-    console.log("animate func");
+    //console.log("animate func");
     //장애물 이동범위 초기화
     for(let i=0;i<circle.length;i++){
         c.clearRect(circle[i].x-radius-3,circle[i].y-radius-5,blockSize-2,blockSize-3);
@@ -202,5 +209,7 @@ function animate(){
     square.move();
     square.draw();
     requestAnimationFrame(animate);
+
+    if(value==1) deleteMap();
 }
 animate();

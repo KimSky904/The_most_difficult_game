@@ -13,9 +13,16 @@ canvas {
     /* background-color: rgba(175, 183, 255, 0.89); */
     background-color: transparent;
     border : 1px solid black;
-    width: 600px;
+    width: 700px;
     height: 400px;
     z-index: 2;
+    width: 550px; 
+    max-width: 550px; 
+    min-width: 550px; 
+    height: 400px; 
+    max-height: 400px; 
+    min-height: 400px; 
+    --waf-content-width:550px; --waf-content-height:400px;
 }
 body {
     width: 100%;
@@ -26,9 +33,13 @@ body {
 div {
     z-index: 1;
 }
-#greenBox {
+.greenBox {
     background-color: rgb(192, 229, 201);
     position:absolute;
+}
+.checkBox {
+    position: absolute;
+    border: none;
 }
 
 .mapBox {
