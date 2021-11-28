@@ -41,25 +41,8 @@ div {
     background : linear-gradient(to right,rgb(255, 255, 255) 50% 50%, rgba(175, 183, 255, 0.733) 50% 50%);
 }
 
-.mapBox {
-    width: 600px;
-    height: 400px;
+#mapImage {
+    /* canvas 중앙 배치 */
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%,-50%);
-    background-color: transparent;
-    border: 1px solid black;
-}
-/* 
-line 제외 배경 요소 그리기, 사이즈는 js에서 맵에 맞추어 동적으로 변경!
-*/
-.saveZone {
-    position: absolute;
-    background-color: rgb(192, 229, 201);
-    border: none;
-}
-.movingZone {
-    position: absolute;
-    background: linear-gradient(to right,
-    red 20%, orange 20% 40%, yellow 40% 60%, green 60% 80%, blue 80%);
-    border: none;
 }

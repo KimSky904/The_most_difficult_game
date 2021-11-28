@@ -19,6 +19,8 @@ let lastX,lastY;
 /* 플레이어 이미지, 플레이어 키보드 조작값, 좌표 */ 
 var imgChar= new Image();
 imgChar.src="image/square.png";
+console.log(imgChar.style.width);
+console.log(imgChar.style.height);
 var keycode;
 var dx=0;
 var dy=0;
@@ -49,48 +51,13 @@ function drawNextLine(finishX, finishY){
 }
 
 
-/* 2. 출발-도착 영역 타일(div) 생성하기 */
-function drawGreenRoom(startX, startY,width,height) {
-    //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
-    let randomIdValue = Math.random();
-    var area = document.createElement('div');
-    area.innerHTML = `<div class='greenBox' id='${randomIdValue}'> </div> `;
-    document.getElementById('mapBox').appendChild(area);
-    var box = document.getElementById(`${randomIdValue}`); 
-    box.style.top = startY-10+canvas.getBoundingClientRect().top + "px";   
-    box.style.left = startX+canvas.getBoundingClientRect().left + "px";   
-    box.style.width = width-3 + "px";
-    box.style.height = height-12 + "px";
-    console.log(canvas.getBoundingClientRect().top);
-    console.log(canvas.getBoundingClientRect().left); 
+/* 2. 맵 배경 이미지 생성하기 */
+function changeMap(mapLevel){
+    let img = document.getElementById('mapImage');
+    img.src = "./image/stage" +mapLevel+".png";
+    // img.style.top = canvas.getBoundingClientRect().top + "px";
+    // img.style.left = canvas.getBoundingClientRect().left + "px";
 }
-/* 3. 체크 타일 채우기 */
-function drawCheckBoxRoom(startX, startY) {
-    //id는 랜덤값으로, class는 지울 수 있도록 동일한 값으로 주기
-    let randomIdValue = Math.random();
-    var area = document.createElement('div');
-    area.innerHTML = `<div class='checkBox' id='${randomIdValue}'> </div> `;
-    document.getElementById('mapBox').appendChild(area);
-    var box = document.getElementById(`${randomIdValue}`); 
-    box.style.top = startY+5+canvas.getBoundingClientRect().top + "px";   
-    box.style.left = startX-6+canvas.getBoundingClientRect().left + "px";   
-    box.style.width = blockSize*2 + "px";
-    box.style.height = blockSize + "px";
-}
-function drawMap(level, imagePath){
-    /* 기존 맵 배경 지우기 */
-
-    /* 신규 맵 배경 추가 */
-    let mapArea = document.createElement('div');
-    mapArea.innerHTML = `<img id='mapImage' src='${imagePath}'> </div> `;
-
-}
-/* 4.맵 지우기 */
-function deleteMap(){
-    c.clearRect(0,0,canvas.width,canvas.height);
-    document.getElementById("mapBox").removeChild();
-}
-
 
 
 /* 장애물 클래스 */
@@ -143,6 +110,9 @@ function Map(){
 }
 /* 플레이어 클래스 */
 function Square(startX, startY) {
+    /* 플레이어 크기 */
+    this.width = 12;
+    this.height = 12;
     /* 시작 위치 */
     this.x = startX;
     this.y = startY;
@@ -151,7 +121,7 @@ function Square(startX, startY) {
         this.y+= dy;
     }
     this.draw = function() {
-        c.drawImage(imgChar,this.x,this.y,12,12);
+        c.drawImage(imgChar,this.x,this.y,this.width,this.height);
     }
 }
 
@@ -178,32 +148,6 @@ function keyup(){
 
 
 
-/* 출발-도착 영역 타일(div) 생성 */
-drawMap(1,"../image/stage1.png");
-// drawGreenRoom(50,140,blockSize*3,blockSize*6);
-// drawGreenRoom(435,140,blockSize*3,blockSize*6);
-// drawCheckBoxRoom(50+blockSize*3,140+blockSize*4);
-// drawCheckBoxRoom(50+14+blockSize*12,123);
-//drawCheckBoxContinuedRoom(50+blockSize*4,123+blockSize,blockSize*10,blockSize*4);
-/* 맵 line 그리기 */
-// drawFirstLine(50,140,50,140+blockSize*6);
-// drawNextLine(lastX+(blockSize*5),lastY); //오른쪽으로 이동
-// drawNextLine(lastX,lastY-(blockSize*1)); //위쪽으로 이동
-// drawNextLine(lastX+(blockSize*9),lastY); //오른쪽
-// drawNextLine(lastX,lastY-(blockSize*4)); //위쪽
-// drawNextLine(lastX+(blockSize*1),lastY); //오른쪽
-// drawNextLine(lastX,lastY+(blockSize*5)); //아래쪽
-// drawNextLine(lastX+(blockSize*3),lastY); //오른쪽
-// drawNextLine(lastX,lastY-(blockSize*6)); //위쪽
-// drawNextLine(lastX-(blockSize*5),lastY-1); //왼쪽
-// drawNextLine(lastX,lastY+(blockSize*1)); //아래쪽
-// drawNextLine(lastX-(blockSize*9),lastY); //왼쪽
-// drawNextLine(lastX,lastY+(blockSize*4)); //아래쪽
-// drawNextLine(lastX-(blockSize*1),lastY); //왼쪽
-// drawNextLine(lastX,lastY-(blockSize*5)); //위쪽
-// drawNextLine(lastX-(blockSize*3),lastY); //왼쪽
-c.lineWidth = 1;
-
 
 
 /* 다중 장애물 생성 */
@@ -228,7 +172,7 @@ function animate(){
     }
     //플레이어 이동 후 그리기
     square.move();
-    c.clearRect(square.x,square.y,blockSize-5,blockSize-5);
+    c.clearRect(square.x-0.5,square.y-0.5,square.width+0.5,square.height+0.5);
     square.draw();
 
     requestAnimationFrame(animate);
