@@ -4,6 +4,10 @@ canvas.width = window.innerWidth*0.3;
 canvas.height = canvas.width*9/12;
 /* canvas context 객체 */
 var c = canvas.getContext('2d');
+/* 음악 재생 */
+var audio = new Audio('music1.mp3');
+audio.play();
+
 
 
 /* 장애물 반지름 지정 */
