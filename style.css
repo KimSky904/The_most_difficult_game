@@ -13,7 +13,7 @@ canvas {
     /* background-color: rgba(175, 183, 255, 0.89); */
     background-color: transparent;
     border : 1px solid black;
-    z-index: 2;
+    z-index: 1;
     width: 550px; 
     max-width: 550px; 
     min-width: 550px; 
@@ -29,7 +29,7 @@ body {
     background-color: #ffffff;
 }
 div {
-    z-index: 1;
+    z-index: 10;
 }
 
 /* 맵 image */
@@ -37,19 +37,36 @@ div {
     /* canvas 와 동일하게 중앙 배치 */
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%,-50%);
+    width : 550px;
+    height :400px;
 }
 
 /* 상태바 */
-#progressBar{  
+#progressBar, #infoBar{  
+    height: 30px;
     width : 550px;
     position: relative;
     background-color: black;
+    text-align: center;
 }
-.progressContext{
+.progressContext, .infoContext{
     display: inline;
     font-family: 'Hanna', sans-serif;
     color: white;
     font-size: 20px;
 }
-
-
+#menu {
+    margin-left: 0px;
+}
+#mapLevel {
+    margin-left: 170px;
+}
+#deaths {
+    margin-left: 145px;
+}
+#howToPlay {
+    margin-left: 0px;
+}
+#developer {
+    margin-left: 240px;
+}

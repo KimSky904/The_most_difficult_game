@@ -25,11 +25,38 @@ var keycode;
 var dx=0;
 var dy=0;
 
+/* 맵 정보 */
+let mapLevel = 1;
+
+
+/* 0. 개발자 정보 링크 div */
+let devInfo = document.getElementById('infoBar'); 
+devInfo.style.top = canvas.getBoundingClientRect().top + canvas.height - 90+"px";   
+devInfo.style.left = canvas.getBoundingClientRect().left+1 + "px";
 
 /* 1. 맵 배경 이미지 생성하기 */
 function changeMap(mapLevel){
     let img = document.getElementById('mapImage');
     img.src = "./image/stage" +mapLevel+".png";
+    img.style.zIndex = 0;
+}
+function howPlayClicked(){
+    let img = document.getElementById('mapImage');
+    if(img.style.zIndex==2){
+        changeMap(mapLevel);
+    } else {
+        img.src = "./image/howToPlay.png";
+        img.style.zIndex = 2;
+    }
+}
+function devInfoClicked(){
+    let img = document.getElementById('mapImage');
+    if(img.style.zIndex==3){
+        changeMap(mapLevel);
+    } else {
+        img.src = "./image/devInfo.png";
+        img.style.zIndex = 3;
+    }
 }
 /* 2. 사용자 상태 정보 생성하기 */
 function changeUserInfo(mapLevel, deathCount) {
@@ -46,7 +73,7 @@ function changeUserInfo(mapLevel, deathCount) {
     console.log(userInfo.style.left);
     console.log(userInfo.style.width);
 }
-changeUserInfo(1,0);
+
 
 /* 장애물 클래스 */
 function Circle(startX, startY,speed,finishX,finishY,leftRight){

@@ -8,22 +8,34 @@
     <body onkeydown="keydown()" onkeyup="keyup()">
         <!-- header -->
         <div class="header"></div>
+        <!-- test 
+        <div class="test" onclick="testClicked()">클릭 테스트</div> -->
         <!-- header -->
         <div id="container">
             <!-- progress bar -->
             <div id="progressBar">
-                <h2 class="progressContext">MENU</h2>
-                <h2 class="progressContext">1/4</h2>
-                <h2 class="progressContext">DEATHS : 0</h2>
+                <h2 class="progressContext" id="menu" onclick="menuClicked()">MENU</h2>
+                <h2 class="progressContext" id="mapLevel">1/4</h2>
+                <h2 class="progressContext" id="deaths">DEATHS : 0</h2>
+            </div>
+            <!-- info bar -->
+            <div id="infoBar">
+                <h2 class="infoContext" id="howToPlay" onclick="howPlayClicked()">HOW TO PLAY</h2>
+                <h2 class="infoContext" id="developer" onclick="devInfoClicked()">DEVELOPERS</h2>
             </div>
             <!-- canvas -->
             <canvas class="canvas" id="canvas"></canvas>
             <!-- map image -->
-            <img id="mapImage" width="550px" height="400px" > 
+            <img id="mapImage"> 
             <!-- connect js -->
             <script type="text/javascript" src="canvas.js"></script>
             <script type="text/javascript" src="function.js"></script>
-
+            <!-- onclick js -->
+            <script>
+                function menuClicked(){
+                    alert("menu 클릭");
+                }
+            </script>
         </div>
         <!-- header -->
         <div class="footer"></div>
