@@ -31,18 +31,25 @@ body {
 div {
     z-index: 1;
 }
-.greenBox {
-    background-color: rgb(192, 229, 201);
-    position:absolute;
-}
-.checkBox {
-    position: absolute;
-    border: none;
-    background : linear-gradient(to right,rgb(255, 255, 255) 50% 50%, rgba(175, 183, 255, 0.733) 50% 50%);
-}
 
+/* 맵 image */
 #mapImage {
-    /* canvas 중앙 배치 */
+    /* canvas 와 동일하게 중앙 배치 */
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%,-50%);
 }
+
+/* 상태바 */
+#progressBar{  
+    width : 550px;
+    position: relative;
+    background-color: black;
+}
+.progressContext{
+    display: inline;
+    font-family: 'Hanna', sans-serif;
+    color: white;
+    font-size: 20px;
+}
+
+

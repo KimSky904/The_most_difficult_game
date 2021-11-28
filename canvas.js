@@ -25,40 +25,28 @@ var keycode;
 var dx=0;
 var dy=0;
 
-/* 1. draw map line */
-function drawFirstLine(startX, startY, finishX, finishY){
-    c.beginPath();
-    c.moveTo(startX,startY);
-    c.lineTo(finishX,finishY);
-    c.strokeStyle = 'black';
-    c.lineWidth = 2;
-    c.lineCap = "square"
-    c.stroke();
-    /* 마지막 line 끝 좌표 저장 */
-    lastX = finishX;
-    lastY = finishY;
-}
-function drawNextLine(finishX, finishY){
-    c.moveTo(lastX,lastY);
-    c.lineTo(finishX,finishY);
-    c.strokeStyle = 'black';
-    c.lineWidth = 2;
-    c.lineCap = "square"
-    c.stroke();
-    /* 마지막 line 끝 좌표 저장 */
-    lastX = finishX;
-    lastY = finishY;
-}
 
-
-/* 2. 맵 배경 이미지 생성하기 */
+/* 1. 맵 배경 이미지 생성하기 */
 function changeMap(mapLevel){
     let img = document.getElementById('mapImage');
     img.src = "./image/stage" +mapLevel+".png";
-    // img.style.top = canvas.getBoundingClientRect().top + "px";
-    // img.style.left = canvas.getBoundingClientRect().left + "px";
 }
-
+/* 2. 사용자 상태 정보 생성하기 */
+function changeUserInfo(mapLevel, deathCount) {
+    let userInfo = document.getElementById('progressBar'); 
+    let menu = userInfo.childNodes[1]; //menu
+    let map = userInfo.childNodes[3]; //map level
+    let deaths = userInfo.childNodes[5]; //deaths
+    map.innerText = mapLevel+"/4";
+    deaths.innerText = "DEATHS : "+deathCount;
+    userInfo.style.top = canvas.getBoundingClientRect().top + "px";   
+    userInfo.style.left = canvas.getBoundingClientRect().left+1 + "px";   
+    userInfo.style.width = canvas.style.width + "px";
+    console.log(userInfo.style.top);
+    console.log(userInfo.style.left);
+    console.log(userInfo.style.width);
+}
+changeUserInfo(1,0);
 
 /* 장애물 클래스 */
 function Circle(startX, startY,speed,finishX,finishY,leftRight){
@@ -148,8 +136,6 @@ function keyup(){
 
 
 
-
-
 /* 다중 장애물 생성 */
 let circle = [new Circle(170+radius, 180, 3, 418-radius, 180,"right")];
 circle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
@@ -171,8 +157,8 @@ function animate(){
         circle[i].draw();
     }
     //플레이어 이동 후 그리기
+    c.clearRect(square.x-0.5,square.y-0.5,square.width+1,square.height+1);
     square.move();
-    c.clearRect(square.x-0.5,square.y-0.5,square.width+0.5,square.height+0.5);
     square.draw();
 
     requestAnimationFrame(animate);
