@@ -45,6 +45,44 @@ function Circle(생성x,생성y,속도,도착x,도착y,왼쪽오른쪽){
 
 맵 클래스 설정
 function Map(level){
-    this.level = level;
-    this.start 
+    this.현재 레벨
+    this.출발 좌표
+    this.도착 좌표(범위)
+    this.장애물 map
 }
+
+
+
+
+[1단계]
+startX : 72.5 
+startY : 200
+arrived1X : 437
+arrived1Y : 119.5
+arrived2X : 437
+arrived2Y : 146.5
+
+[2단계]
+startX : 99.5 
+startY : 200
+arrived1X : 410
+arrived1Y : 173
+arrived2X : 410
+arrived2Y : 227
+
+[3단계]
+startX : 114 
+startY : 308.5
+arrived1X : 464.5
+arrived1Y : 65
+arrived2X : 464.5
+arrived2Y : 119
+
+[4단계]
+startX : 248.5 
+startY : 106
+arrived1X : 316
+arrived1Y : 133
+arrived2X : 343
+arrived2Y : 133
+ 

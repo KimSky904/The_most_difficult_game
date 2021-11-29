@@ -6,7 +6,7 @@ canvas.height = canvas.width*9/12;
 var c = canvas.getContext('2d');
 /* 음악 재생 */
 var audio = new Audio('music1.mp3');
-audio.volume = 1;
+audio.volume = 0.8;
 let audioPlay = false;
 
 
@@ -32,6 +32,7 @@ var dy=0;
 
 /* 맵 정보 */
 let mapLevel = 1;
+let deathCount = 0;
 
 
 /* 0. 개발자 정보 링크 div */
@@ -130,16 +131,7 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
         c.stroke();
     }
 }
-/* 맵 클래스 */
-function Map(){
-    /* 맵 정보 */
-    let mapNumber;
-    /* 사용자 출발 좌표 */
-    let startX,startY;
-    /* 도착 인식 좌표 */
-    let arrivedX, arrivedY;
-    /* 장애물 정보 */
-}
+
 /* 플레이어 클래스 */
 function Square(startX, startY) {
     /* 플레이어 크기 */
@@ -151,6 +143,7 @@ function Square(startX, startY) {
     this.move = function() {
         this.x+= dx;
         this.y+= dy;
+        //stages[mapLevel-1].checkArrived(this.x,this.y);
     }
     this.draw = function() {
         c.drawImage(imgChar,this.x,this.y,this.width,this.height);
@@ -178,35 +171,44 @@ function keyup(){
     }
 }
 
-
-
-/* 다중 장애물 생성 */
-let circle = [new Circle(170+radius, 180, 3, 418-radius, 180,"right")];
-circle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
-circle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
-circle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
-
-/* 플레이어 생성 */
-let square = new Square(85, 200);
-let value=0;
-/* 애니메이션 */
-function animate(){
-    //console.log("animate func");
-    //장애물 이동범위 초기화
-    for(let i=0;i<circle.length;i++){
-        c.clearRect(circle[i].x-radius-3,circle[i].y-radius-5,blockSize-2,blockSize-3);
+/* 맵 클래스 */
+function Mapp(mapLevel,startX,startY,arrived1X,arrived1Y,arrived2X,arrived2Y){
+    /* 맵 정보 */
+    this.mapLevel = mapLevel;
+    /* 사용자 출발 좌표 */
+    this.startX = startX;
+    this.startY = startY;
+    /* 도착 인식 좌표 */
+    this.arrived1X = arrived1X;
+    this.arrived1Y = arrived1Y;
+    this.arrived2X = arrived2X;
+    this.arrived2Y = arrived2Y;
+    /* 장애물 정보 */
+    this.obstacle = [];
+    /* 다음 단계 */
+    this.checkArrived = function(squareX,squareY){
+        if((squareX>arrived1X||squareX>arrived2X)&&(squareY>arrived1Y||squareY>arrived2Y)){
+            alert("도착함");
+            startNextLevel(mapLevel);
+        } 
     }
-    //장애물 draw
-    for(let i=0;i<circle.length;i++){
-        circle[i].draw();
-    }
-    //플레이어 이동 후 그리기
-    c.clearRect(square.x-0.5,square.y-0.5,square.width+1,square.height+1);
-    square.move();
-    square.draw();
-
-    requestAnimationFrame(animate);
-
-    if(value==1) deleteMap();
 }
-animate();
+
+function startNextLevel(mapLevel){
+    c.clearRect(0,0,canvas.width,canvas.height);
+    mapLevel++;
+    changeUserInfo(mapLevel,deathCount);
+    changeMap(mapLevel);
+}
+
+//stage1,2,3,4 map 객체 생성
+//각 객체에는 장애물 정보가 push배열로 들어있음
+//어떻게 push?
+let stages = [];
+//stage1.obstacle[0].push(new Circle(170+radius, 180, 3, 418-radius, 180,"right"));
+// stages.push(new Mapp(2,99.5,200.5,410,173,410,227));
+// stages.push(new Mapp(3,114,308.5,464.5,65,464.5,119));
+// stages.push(new Mapp(4,248.5,106,316,133,343,133));
+
+
+
