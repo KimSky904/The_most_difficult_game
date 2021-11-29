@@ -71,12 +71,12 @@ arrived2X : 410
 arrived2Y : 227
 
 [3단계]
-startX : 114 
-startY : 308.5
-arrived1X : 464.5
-arrived1Y : 65
-arrived2X : 464.5
-arrived2Y : 119
+startX : 81 
+startY : 322
+arrived1X : 424
+arrived1Y : 295
+arrived2X : 478
+arrived2Y : 295
 
 [4단계]
 startX : 248.5 

@@ -29,10 +29,11 @@ console.log(imgChar.style.height);
 var keycode;
 var dx=0;
 var dy=0;
-
-/* 맵 정보 */
-let mapLevel = 1;
 let deathCount = 0;
+/* 플레이 정보 */
+let mapp,player,circle;
+mapLevel = 1;
+setLevel();
 
 
 /* 0. 개발자 정보 링크 div */
@@ -117,10 +118,18 @@ function Circle(startX, startY,speed,finishX,finishY,leftRight){
             if(this.x < this.startX || this.x > this.finishX)  //시작점과 끝점 사이를 이동
                 this.speed = -this.speed;
             this.x += this.speed;
-        } else {
+        } else if(this.direction == "left"){
             if(this.x > this.startX || this.x < this.finishX) //시작점과 끝점 사이를 이동
                 this.speed = -this.speed;
             this.x += this.speed;
+        } else if(this.direction == "up"){
+            if(this.y > this.startY || this.y < this.finishY) //시작점과 끝점 사이를 이동
+                this.speed = -this.speed;
+            this.y += this.speed;
+        } else if(this.direction == "down"){
+            if(this.y < this.startY || this.y > this.finishY) //시작점과 끝점 사이를 이동
+                this.speed = -this.speed;
+            this.y += this.speed;
         }
         //console.log("draw func");
         c.beginPath();
@@ -194,21 +203,70 @@ function Mapp(mapLevel,startX,startY,arrived1X,arrived1Y,arrived2X,arrived2Y){
     }
 }
 
-function startNextLevel(mapLevel){
+
+
+function setLevel(){
     c.clearRect(0,0,canvas.width,canvas.height);
-    mapLevel++;
+    if(mapLevel == 1){
+        mapp = new Mapp(1,72.5,200,437,119.5,437,146.5);
+        mapp.obstacle.push(new Circle(170+radius, 180, 3, 418-radius, 180,"right"));
+        mapp.obstacle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
+        mapp.obstacle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
+        mapp.obstacle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
+    }
+    if(mapLevel == 2){
+        mapp = new Mapp(2,99.5,210,410,173,410,227);
+        mapp.obstacle.push(new Circle(145+18, 259+30, 3, 145+15, 124+15 ,"up"));
+        mapp.obstacle.push(new Circle(172+18, 124+15, 3, 172+15, 259+30,"down"));
+        mapp.obstacle.push(new Circle(199+18, 259+30, 3, 199+15, 124+15,"up"));
+        mapp.obstacle.push(new Circle(226+21, 124+15, 3, 226+15, 259+30,"down"));
+        mapp.obstacle.push(new Circle(253+22, 259+30, 3, 253+15, 124+15,"up"));
+        mapp.obstacle.push(new Circle(280+23, 124+15, 3, 280+15, 259+30,"down"));
+        mapp.obstacle.push(new Circle(307+24, 259+30, 3, 307+15, 124+15,"up"));
+        mapp.obstacle.push(new Circle(334+25, 124+15, 3, 334+15, 259+30,"down"));
+        mapp.obstacle.push(new Circle(361+26, 259+30, 3, 361+15, 124+15,"up"));
+        mapp.obstacle.push(new Circle(388+27, 124+15, 3, 388+15, 259+30,"down"));
+    }
+    if(mapLevel == 3){
+        mapp = new Mapp(3,100,340,424,295,478,295);
+        mapp.obstacle.push(new Circle(100+18, 268+30, 2, 100, 214+30 ,"up"));
+        mapp.obstacle.push(new Circle(154+21, 214+30, 2, 199+15, 124+60,"up"));
+        mapp.obstacle.push(new Circle(208+25, 124+70, 2, 253+15, 124,"up"));
+        mapp.obstacle.push(new Circle(208+25+27+27, 124+12, 2, 253+15, 124-60,"up"));
+        mapp.obstacle.push(new Circle(208+25, 124+70, 2, 253+15, 124,"up"));
+        mapp.obstacle.push(new Circle(316+27, 124+70, 2, 316,  124,"up"));
+        mapp.obstacle.push(new Circle(370+32, 214+30, 2, 370, 124+60,"up"));
+        mapp.obstacle.push(new Circle(424+36, 268+30, 2, 424, 214+30,"up"));
+    }
+    if(mapLevel == 4){
+        mapp = new Mapp(4,248.5,106,316,133,343,133);
+        mapp.obstacle.push(new Circle(170+radius, 180, 3, 418-radius, 180,"right"));
+        mapp.obstacle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
+        mapp.obstacle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
+        mapp.obstacle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
+    }
+    player = new Square(mapp.startX,mapp.startY);
     changeUserInfo(mapLevel,deathCount);
     changeMap(mapLevel);
 }
 
-//stage1,2,3,4 map 객체 생성
-//각 객체에는 장애물 정보가 push배열로 들어있음
-//어떻게 push?
-let stages = [];
-//stage1.obstacle[0].push(new Circle(170+radius, 180, 3, 418-radius, 180,"right"));
-// stages.push(new Mapp(2,99.5,200.5,410,173,410,227));
-// stages.push(new Mapp(3,114,308.5,464.5,65,464.5,119));
-// stages.push(new Mapp(4,248.5,106,316,133,343,133));
+/* 애니메이션 */
+function animate(){
+    //console.log("animate func");
+    //장애물 이동범위 초기화
+    for(let i=0;i<mapp.obstacle.length;i++){
+        c.clearRect(mapp.obstacle[i].x-radius-3,mapp.obstacle[i].y-radius-5,blockSize-2,blockSize-3);
+    }
+    //장애물 draw
+    for(let i=0;i<mapp.obstacle.length;i++){
+        mapp.obstacle[i].draw();
+    }
+    //플레이어 이동 후 그리기
+    c.clearRect(player.x-0.5,player.y-0.5,player.width+1,player.height+1);
+    player.move();
+    
+    player.draw();
 
-
-
+    requestAnimationFrame(animate);
+}
+animate();
