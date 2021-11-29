@@ -6,7 +6,8 @@ canvas.height = canvas.width*9/12;
 var c = canvas.getContext('2d');
 /* 음악 재생 */
 var audio = new Audio('music1.mp3');
-audio.play();
+audio.volume = 1;
+let audioPlay = false;
 
 
 
@@ -60,6 +61,18 @@ function devInfoClicked(){
     } else {
         img.src = "./image/devInfo.png";
         img.style.zIndex = 3;
+    }
+}
+function soundClicked(){
+    let img = document.getElementById('sound');
+    if(audioPlay){
+        img.src = "./image/volume-on.png";
+        audio.play();
+        audioPlay = false;
+    } else {
+        img.src = "./image/volume-off.png";
+        audio.pause();
+        audioPlay = true;
     }
 }
 /* 2. 사용자 상태 정보 생성하기 */

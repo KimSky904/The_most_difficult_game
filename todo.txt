@@ -40,3 +40,11 @@ function Circle(생성x,생성y,속도,도착x,도착y,왼쪽오른쪽){
     }
 
 }
+
+
+
+맵 클래스 설정
+function Map(level){
+    this.level = level;
+    this.start 
+}

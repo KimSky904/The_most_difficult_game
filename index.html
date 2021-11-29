@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>세상에서 가장 어려운 게임</title>
+        <link rel="shortcut icon" type="image/x-icon" href="image/logo.png">
         <!-- connect css -->
         <link rel="stylesheet" href="style.css">
     </head>
@@ -14,7 +15,7 @@
         <div id="container">
             <!-- progress bar -->
             <div id="progressBar">
-                <h2 class="progressContext" id="menu" onclick="menuClicked()">MENU</h2>
+                <img class="progressContext" id="sound" onclick="soundClicked()" src="image/volume-off.png" width="22px" height="22px">
                 <h2 class="progressContext" id="mapLevel">1/4</h2>
                 <h2 class="progressContext" id="deaths">DEATHS : 0</h2>
             </div>
@@ -30,12 +31,6 @@
             <!-- connect js -->
             <script type="text/javascript" src="canvas.js"></script>
             <script type="text/javascript" src="function.js"></script>
-            <!-- onclick js -->
-            <script>
-                function menuClicked(){
-                    alert("menu 클릭");
-                }
-            </script>
         </div>
         <!-- header -->
         <div class="footer"></div>
