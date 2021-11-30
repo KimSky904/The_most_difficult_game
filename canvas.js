@@ -86,11 +86,6 @@ function changeUserInfo(mapLevel, deathCount) {
     map.innerText = mapLevel+"/4";
     deaths.innerText = "DEATHS : "+deathCount;
     userInfo.style.top = canvas.getBoundingClientRect().top + "px";   
-    userInfo.style.left = canvas.getBoundingClientRect().left+1 + "px";   
-    userInfo.style.width = canvas.style.width + "px";
-    console.log(userInfo.style.top);
-    console.log(userInfo.style.left);
-    console.log(userInfo.style.width);
 }
 
 
@@ -204,7 +199,7 @@ function Mapp(mapLevel,startX,startY,arrived1X,arrived1Y,arrived2X,arrived2Y){
 }
 
 
-
+//각 레벨에 맞는 맵정보, 장애물 생성
 function setLevel(){
     c.clearRect(0,0,canvas.width,canvas.height);
     if(mapLevel == 1){
@@ -244,6 +239,8 @@ function setLevel(){
         mapp.obstacle.push(new Circle(418-radius, 180+blockSize*1, 3, 170+radius,180+blockSize*1,"left"));
         mapp.obstacle.push(new Circle(170+radius, 180+blockSize*2, 3, 418-radius,180+blockSize*2,"right"));
         mapp.obstacle.push(new Circle(418-radius, 180+blockSize*3, 3, 170+radius,180+blockSize*3,"left"));
+        mapp.obstacle.push(new Circle(170+radius, 180+blockSize*4, 3, 418-radius,180+blockSize*4,"right"));
+        mapp.obstacle.push(new Circle(418-radius, 180+blockSize*5, 3, 170+radius,180+blockSize*5,"left"));
     }
     player = new Square(mapp.startX,mapp.startY);
     changeUserInfo(mapLevel,deathCount);
@@ -252,7 +249,6 @@ function setLevel(){
 
 /* 애니메이션 */
 function animate(){
-    //console.log("animate func");
     //장애물 이동범위 초기화
     for(let i=0;i<mapp.obstacle.length;i++){
         c.clearRect(mapp.obstacle[i].x-radius-3,mapp.obstacle[i].y-radius-5,blockSize-2,blockSize-3);
@@ -264,9 +260,24 @@ function animate(){
     //플레이어 이동 후 그리기
     c.clearRect(player.x-0.5,player.y-0.5,player.width+1,player.height+1);
     player.move();
-    
+    //도착지점에 도달하면 맵 변경
+    if(mapLevel==1){
+        if(player.x>mapp.arrived1X) {
+            mapLevel = 2;
+            setLevel();
+        }
+    } else if(mapLevel==2){
+        if(player.x>mapp.arrived1X) {
+            mapLevel = 3;
+            setLevel();
+        }
+    } else if(mapLevel==3){
+        if(player.x>mapp.arrived1X) {
+            mapLevel = 4;
+            setLevel();
+        }
+    }
     player.draw();
-
     requestAnimationFrame(animate);
 }
 animate();

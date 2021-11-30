@@ -47,6 +47,8 @@ img {
 
 /* 상태바 */
 #progressBar, #infoBar{  
+        /* canvas 와 동일하게 중앙 배치 */
+        position: absolute; left: 35.7%; top: 50%;
     width: 550px;
     height: 30px;
     position: relative;
