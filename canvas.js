@@ -27,6 +27,10 @@ imgChar.src="image/square.png";
 console.log(imgChar.style.width);
 console.log(imgChar.style.height);
 var keycode;
+var circleX;
+var circleY;
+var squareX;
+var squareY;
 var dx=0;
 var dy=0;
 let deathCount = 0;
@@ -144,10 +148,37 @@ function Square(startX, startY) {
     /* 시작 위치 */
     this.x = startX;
     this.y = startY;
+
     this.move = function() {
-        this.x+= dx;
-        this.y+= dy;
-        //stages[mapLevel-1].checkArrived(this.x,this.y);
+        this.WallReachCheck();  //가장자리벽 충돌처리(플레이어이동불가처리)
+        //this.CircleReackCheck();
+        //장애물 충돌처리(일단 x좌표만 비교, 충돌시 시작지점으로 강제이동)
+        if ((this.x + 12 == circleX || this.x - 12 == circleX) ) {
+            this.x = 85;
+            this.y = 200;
+        }
+        else {  //충돌하지 않았을때 플레이어 이동
+            this.x += dx;
+            this.y += dy;
+        }
+        
+    }  
+    this.WallReachCheck = function() {
+        if (this.x < 23 + 12) {
+            this.x = 23 + 12;
+        }
+        else if (this.x > 542 - 12) {
+            this.x = 542 - 12;
+        }
+        if (this.y < 117 + 12) {
+            this.y = 117 + 12;
+        }
+        else if (this.y > 303 - 12) {
+            this.y = 303 - 12;
+        }
+    }
+    this.CircleReackCheck = function() {
+        
     }
     this.draw = function() {
         c.drawImage(imgChar,this.x,this.y,this.width,this.height);
